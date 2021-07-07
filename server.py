@@ -21,3 +21,29 @@ def _set_sqlite_pragma(dbapi_connection, connection_record):
         cursor.close()
 
 
+# instantiating db
+db = SQLAlchemy(app)
+now = datetime.now()
+
+# models
+class User(db.Model):
+    """a user table model for our database"""
+
+    __tablename__ = "user"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    email = db.Column(db.String(50))
+    address = db.Column(db.String(200))
+    phone = db.Column(db.String(50))
+    posts = db.relationship("BlogPost")
+
+
+class BlogPost(db.Model):
+    """blog_post model for our database"""
+
+    __tablename__ = "blog_post"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100))
+    body = db.Column(db.String(300))
+    date = db.Column(db.Date)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
