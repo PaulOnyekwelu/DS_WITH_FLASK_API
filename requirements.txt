@@ -2,8 +2,6 @@ appdirs==1.4.4
 astroid==2.6.2
 black==21.6b0
 click==8.0.1
-Flask==2.0.1
-Flask-SQLAlchemy==2.5.1
 greenlet==1.1.0
 isort==5.9.1
 itsdangerous==2.0.1
