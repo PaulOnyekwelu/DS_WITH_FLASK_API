@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
+
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sqlitedb.file"
@@ -75,7 +76,9 @@ def create_user():
 
 @app.route("/user/descending_id", methods=["GET"])
 def get_all_users_descending():
-    pass
+    users = User.query.all()
+    print(users)
+    return jsonify({"message": "all users gotten"}), 200
 
 
 @app.route("/user/ascending_id", methods=["GET"])
