@@ -59,7 +59,9 @@ def create_user():
         or not data["phone"]
     ):
         return jsonify({"message": "Please provide all fields"}), 400
-    # user = User.find()
+    user = User.query.filter_by(email=data["email"]).first()
+    if user:
+        return jsonify({"message": "Email already taken"}), 400
     new_user = User(
         name=data["name"],
         email=data["email"],
