@@ -4,6 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
+from faker import Faker
+import server
+from random import randrange
 
 
 app = Flask(__name__)
@@ -47,6 +50,7 @@ class BlogPost(db.Model):
     body = db.Column(db.String(300))
     date = db.Column(db.Date)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
 
 
 # app routes
