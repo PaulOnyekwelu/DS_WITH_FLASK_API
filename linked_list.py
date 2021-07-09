@@ -52,12 +52,3 @@ class LinkedList:
             node = node.next_node
         string_ll += " None"
         print(string_ll)
-
-
-linked_list = LinkedList()
-linked_list.insert_beginning("from the beginning 1")
-linked_list.insert_beginning("from the beginning 2")
-linked_list.insert_end("last node")
-linked_list.insert_end("enddddd..")
-
-linked_list.print_ll()

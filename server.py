@@ -19,7 +19,7 @@ def _set_sqlite_pragma(dbapi_connection, connection_record):
     if isinstance(dbapi_connection, SQLite3Connection):
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_key=ON;")
-        cursor.close()
+        cursor.close() 
 
 
 # instantiating db
@@ -36,7 +36,7 @@ class User(db.Model):
     email = db.Column(db.String(50), unique=True)
     address = db.Column(db.String(200))
     phone = db.Column(db.String(50))
-    posts = db.relationship("BlogPost")
+    posts = db.relationship("BlogPost", cascade="all, delete")
 
 
 class BlogPost(db.Model):
@@ -131,8 +131,11 @@ def get_user(user_id):
 
 
 @app.route("/user/<user_id>", methods=["DELETE"])
-def delete_user():
-    pass
+def delete_user(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"message": "user deleted"}), 200
 
 
 @app.route("/user/<user_id>", methods=["GET"])
