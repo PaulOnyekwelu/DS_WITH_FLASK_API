@@ -50,7 +50,6 @@ class BlogPost(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
 
-
 # app routes
 @app.route("/user", methods=["POST"])
 def create_user():
@@ -81,15 +80,17 @@ def get_all_users_descending():
     users = User.query.all()
     user_ll = linked_list.LinkedList()
     for user in users:
-        user_ll.insert_beginning({
-            "id": user.id,
-            "name": user.name,
-            "email": user.email,
-            "address": user.address,
-            "phone": user.phone
-        })
+        user_ll.insert_beginning(
+            {
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "address": user.address,
+                "phone": user.phone,
+            }
+        )
     users = user_ll.to_list()
-    return jsonify({"users": users}), 200
+    return jsonify(users), 200
 
 
 @app.route("/user/ascending_id", methods=["GET"])
@@ -97,19 +98,36 @@ def get_all_users_ascending():
     users = User.query.all()
     user_ll = linked_list.LinkedList()
     for user in users:
-        user_ll.insert_end({
-            "id": user.id,
-            "name": user.name,
-            "email": user.email,
-            "address": user.address,
-            "phone": user.phone
-        })
+        user_ll.insert_end(
+            {
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "address": user.address,
+                "phone": user.phone,
+            }
+        )
     users = user_ll.to_list()
-    return jsonify({"users": users}), 200
+    return jsonify(users), 200
+
 
 @app.route("/user/<user_id>", methods=["GET"])
-def get_user():
-    pass
+def get_user(user_id):
+    users = User.query.all()
+    user_ll = linked_list.LinkedList()
+    for user in users:
+        user_ll.insert_beginning(
+            {
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "address": user.address,
+                "phone": user.phone,
+            }
+        )
+
+    user = user_ll.get_user_by_id(user_id)
+    return jsonify(user), 200
 
 
 @app.route("/user/<user_id>", methods=["DELETE"])
