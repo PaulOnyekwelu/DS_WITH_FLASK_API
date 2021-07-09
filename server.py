@@ -4,9 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
-from faker import Faker
-import server
-from random import randrange
+import linked_list
 
 
 app = Flask(__name__)
@@ -81,14 +79,33 @@ def create_user():
 @app.route("/user/descending_id", methods=["GET"])
 def get_all_users_descending():
     users = User.query.all()
-    print(users)
-    return jsonify({"message": "all users gotten"}), 200
+    user_ll = linked_list.LinkedList()
+    for user in users:
+        user_ll.insert_beginning({
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "address": user.address,
+            "phone": user.phone
+        })
+    users = user_ll.to_list()
+    return jsonify({"users": users}), 200
 
 
 @app.route("/user/ascending_id", methods=["GET"])
 def get_all_users_ascending():
-    pass
-
+    users = User.query.all()
+    user_ll = linked_list.LinkedList()
+    for user in users:
+        user_ll.insert_end({
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "address": user.address,
+            "phone": user.phone
+        })
+    users = user_ll.to_list()
+    return jsonify({"users": users}), 200
 
 @app.route("/user/<user_id>", methods=["GET"])
 def get_user():

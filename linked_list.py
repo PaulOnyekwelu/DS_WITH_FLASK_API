@@ -28,6 +28,14 @@ class LinkedList:
         self.last_node.next_node = Node(data, None)
         self.last_node = self.last_node.next_node
 
+    def to_list(self):
+        result = []
+        node = self.head
+        while node:
+            result.append(node.data)
+            node = node.next_node
+        return result
+
     def print_ll(self):
         string_ll = ""
         node = self.head

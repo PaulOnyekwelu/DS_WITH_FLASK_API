@@ -1,9 +1,12 @@
+from random import randrange
 from sqlite3 import Connection as SQLite3Connection
 from datetime import datetime
+from faker import Faker
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import server
 
 # app
 app = Flask(__name__)
@@ -43,6 +46,8 @@ for i in range(200):
     date = faker.date_time()
     user_id = randrange(1, 200)
 
-    new_blog_post = server.BlogPost(title=title, body=body, date=date, user_id=user_id)
+    new_blog_post = server.BlogPost(
+        title=title, body=body, date=date, user_id=user_id
+    )
     db.session.add(new_blog_post)
     db.session.commit()
