@@ -14,10 +14,19 @@ class LinkedList:
         self.last_node = None
 
     def insert_beginning(self, data):
-        node = Node(data, self.head)
-        if self.last_node == None:
+        if self.head is None:
+            self.head = Node(data, self.head)
             self.last_node = self.head
-        self.head = node
+        else:
+            node = Node(data, self.head)
+            self.head = node
+
+    def insert_end(self, data):
+        if self.head is None:
+            self.insert_beginning(data)
+            return
+        self.last_node.next_node = Node(data, None)
+        self.last_node = self.last_node.next_node
 
     def print_ll(self):
         string_ll = ""
@@ -30,10 +39,9 @@ class LinkedList:
 
 
 linked_list = LinkedList()
-
-# inserting node
-linked_list.insert_beginning("I am getting it")
-linked_list.insert_beginning("singly linked list is making sense")
-linked_list.insert_beginning("Thank God for understanding")
+linked_list.insert_beginning("from the beginning 1")
+linked_list.insert_beginning("from the beginning 2")
+linked_list.insert_end("last node")
+linked_list.insert_end("enddddd..")
 
 linked_list.print_ll()
