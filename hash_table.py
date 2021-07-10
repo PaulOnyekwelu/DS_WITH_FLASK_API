@@ -32,6 +32,19 @@ class HashTable:
                 node = node.next_node
             node.next_node = Node(Data(key, value), None)
 
+    def get_value(self, key):
+        hash_key = self.custom_hash(key)
+        node = self.hash_table[hash_key]
+        if node is None:
+            return None
+        if node.next_node:
+            while node.next_node:
+                if node.data.key is key:
+                    return node.data.value
+                node = node.next_node
+        if node.data.key is key:
+            return node.data.value
+
     def preview(self):
         print("{")
         for i, node in enumerate(self.hash_table):
@@ -39,9 +52,13 @@ class HashTable:
                 ht_string = ""
                 if node.next_node:
                     while node.next_node:
-                        ht_string += f"({str(node.data.key)} : {str(node.data.value)}) --> "
+                        ht_string += (
+                            f"({str(node.data.key)} : {str(node.data.value)}) --> "
+                        )
                         node = node.next_node
-                    ht_string += f"({str(node.data.key)} : {str(node.data.value)}) --> None"
+                    ht_string += (
+                        f"({str(node.data.key)} : {str(node.data.value)}) --> None"
+                    )
                     print(f"    [{i}] -> {ht_string}")
                 else:
                     print(f"    [{i}] -> ({node.data.key} : {node.data.value})")
@@ -51,9 +68,12 @@ class HashTable:
         print("{")
 
 
-ht = HashTable(4)
-ht.add_key_value("hi", "hello")
-ht.add_key_value("song", "hello")
-ht.add_key_value("odogwu", "hello")
-ht.add_key_value("silanka", "hello")
-ht.preview()
+# ht = HashTable(4)
+# ht.add_key_value("hi", "hello")
+# ht.add_key_value("song", "Jon Bellion")
+# ht.add_key_value("odogwu", "Burna boy")
+# ht.add_key_value("silanka", "Fullstack DS/ML")
+
+# print(ht.get_value("silanka"))
+# print(ht.get_value("song"))
+# print(ht.get_value("songs"))
