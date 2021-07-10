@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 import linked_list
+import hash_table
 
 
 app = Flask(__name__)
@@ -19,7 +20,7 @@ def _set_sqlite_pragma(dbapi_connection, connection_record):
     if isinstance(dbapi_connection, SQLite3Connection):
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_key=ON;")
-        cursor.close() 
+        cursor.close()
 
 
 # instantiating db
@@ -72,7 +73,7 @@ def create_user():
     )
     db.session.add(new_user)
     db.session.commit()
-    return jsonify(data), 201
+    return jsonify({"message": "User created successfully"}), 201
 
 
 @app.route("/user/descending_id", methods=["GET"])
@@ -146,11 +147,29 @@ def get_all_blog_posts():
 
 
 @app.route("/blog_post/<user_id>", methods=["POST"])
-def create_blog_post():
-    pass
+def create_blog_post(user_id):
+    data = request.get_json()
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({"message": "user does not exist"}), 400
+    print(data)
+    blog_ht = hash_table.HashTable(4)
+    blog_ht.add_key_value("title", data["title"])
+    blog_ht.add_key_value("body", data["body"])
+    blog_ht.add_key_value("date", now)
+    blog_ht.add_key_value("user_id", user_id)
+    blog_post = BlogPost(
+        title=blog_ht.get_value("title"),
+        body=blog_ht.get_value("body"),
+        date=blog_ht.get_value("date"),
+        user_id=blog_ht.get_value("user_id"),
+    )
+    db.session.add(blog_post)
+    db.session.commit()
+    return jsonify({"message": "Blog post created successfully"}), 200
 
 
-@app.route("/b log_post/<blog_id>", methods=["GET"])
+@app.route("/blog_post/<blog_id>", methods=["GET"])
 def get_blog_post():
     pass
 
